@@ -83,8 +83,6 @@
 import { Clock, DataAnalysis, Document, Lock } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import { useTestStore } from '../stores/testStore'
-import { ElMessage } from 'element-plus'
-import { handleError, withErrorHandling } from '../utils/errorHandler'
 
 const router = useRouter()
 const testStore = useTestStore()

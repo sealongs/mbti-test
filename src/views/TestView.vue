@@ -99,7 +99,7 @@ import { useRouter } from 'vue-router'
 import { useTestStore } from '../stores/testStore'
 import { questions } from '../data/questions'
 import { ElMessage } from 'element-plus'
-import { handleError, ErrorType, withErrorHandling } from '../utils/errorHandler'
+import { handleError, withErrorHandling } from '../utils/errorHandler'
 
 const router = useRouter()
 const testStore = useTestStore()

@@ -19,7 +19,7 @@ const router = createRouter({
       path: '/result',
       name: 'result',
       component: () => import('../views/ResultView.vue'),
-      beforeEnter: (to, from, next) => {
+      beforeEnter: (_, __, next) => {
         const testStore = useTestStore()
         // 如果没有测试结果，重定向到测试页面
         if (!testStore.isTestCompleted) {

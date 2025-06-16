@@ -1,17 +1,19 @@
 import { ElMessage, ElNotification } from 'element-plus'
 
 /**
- * 错误类型枚举
+ * 错误类型常量
  */
-export enum ErrorType {
-  NETWORK = 'network',
-  TIMEOUT = 'timeout',
-  AUTH = 'auth',
-  VALIDATION = 'validation',
-  SERVER = 'server',
-  CLIENT = 'client',
-  UNKNOWN = 'unknown'
-}
+export const ErrorType = {
+  NETWORK: 'network',
+  TIMEOUT: 'timeout',
+  AUTH: 'auth',
+  VALIDATION: 'validation',
+  SERVER: 'server',
+  CLIENT: 'client',
+  UNKNOWN: 'unknown'
+} as const;
+
+export type ErrorTypeValue = typeof ErrorType[keyof typeof ErrorType];
 
 /**
  * 错误处理配置选项
@@ -22,6 +24,8 @@ export interface ErrorHandlerOptions {
   logToConsole?: boolean
   logToServer?: boolean
   context?: string
+  message?: string
+  type?: ErrorTypeValue
 }
 
 /**
@@ -38,7 +42,7 @@ const defaultOptions: ErrorHandlerOptions = {
 /**
  * 错误类型检测
  */
-export const detectErrorType = (error: Error | unknown): ErrorType => {
+export const detectErrorType = (error: Error | unknown): typeof ErrorType[keyof typeof ErrorType] => {
   if (!error) return ErrorType.UNKNOWN
 
   const err = error as Error
@@ -70,7 +74,7 @@ export const detectErrorType = (error: Error | unknown): ErrorType => {
 /**
  * 获取用户友好的错误消息
  */
-export const getFriendlyErrorMessage = (error: Error | unknown, errorType?: ErrorType): string => {
+export const getFriendlyErrorMessage = (error: Error | unknown, errorType?: typeof ErrorType[keyof typeof ErrorType]): string => {
   const type = errorType || detectErrorType(error)
   
   switch (type) {
@@ -95,7 +99,7 @@ export const getFriendlyErrorMessage = (error: Error | unknown, errorType?: Erro
  * 记录错误到服务器
  * 注意：这是一个模拟函数，实际项目中应替换为真实的错误上报逻辑
  */
-const logErrorToServer = (error: Error | unknown, context: string, errorType: ErrorType): void => {
+const logErrorToServer = (error: Error | unknown, context: string, errorType: typeof ErrorType[keyof typeof ErrorType]): void => {
   // 实际项目中，这里应该是一个API调用，将错误信息发送到服务器
   console.info('[Error Report]', {
     timestamp: new Date().toISOString(),
