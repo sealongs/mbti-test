@@ -87,9 +87,15 @@ import { useTestStore } from '../stores/testStore'
 const router = useRouter()
 const testStore = useTestStore()
 
-const startTest = () => {
-  testStore.resetTest() // 重置之前的测试状态
-  router.push('/test')
+const startTest = async () => {
+  try {
+    await testStore.initializeTest() // 先初始化测试
+    testStore.resetTest() // 然后重置测试状态
+    router.push('/test')
+  } catch (error) {
+    console.error('Failed to start test:', error)
+    // 可以在这里添加用户通知逻辑
+  }
 }
 </script>
 

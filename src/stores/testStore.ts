@@ -40,7 +40,11 @@ export const useTestStore = defineStore('test', () => {
       // 初始化测试问题
       testQuestions.value = [...questions]
       isInitialized.value = true
-      resetTest()
+      // 重置测试状态（此时isInitialized已为true）
+      currentQuestionIndex.value = 0
+      answers.value = []
+      result.value = null
+      isTestCompleted.value = false
     } catch (error) {
       isInitialized.value = false
       testQuestions.value = []
@@ -169,14 +173,8 @@ export const useTestStore = defineStore('test', () => {
   }
 
   function resetTest() {
-    if (!isInitialized.value) {
-      handleError(new Error('Test not initialized'), {
-        context: 'Reset Test',
-        showMessage: true,
-        message: '测试未初始化，请刷新页面重试'
-      })
-      return
-    }
+    // 只重置测试进度，不检查初始化状态
+    // 初始化状态由initializeTest()负责
     currentQuestionIndex.value = 0
     answers.value = []
     result.value = null

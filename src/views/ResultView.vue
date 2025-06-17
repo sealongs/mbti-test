@@ -1,11 +1,11 @@
 <template>
   <div class="result-container">
     <el-card class="result-card" v-loading="loading" element-loading-text="加载测试结果中...">
-      <!-- 支付弹窗组件 -->
-      <PaymentModal 
+      <!-- 支付弹窗组件 (已注释) -->
+      <!-- <PaymentModal 
         v-model="showPaymentModal" 
         @payment-success="handlePaymentSuccess"
-      />
+      /> -->
       <template #header>
         <div class="card-header">
           <h1>你的MBTI类型是：{{ result?.type }}</h1>
@@ -140,7 +140,7 @@
           </div>
           <h3>解锁完整测试报告</h3>
           <p>完整报告包含详细的性格描述、维度得分分析、优势劣势分析以及适合您的职业推荐。</p>
-          <el-button type="primary" @click="showPaymentModal = true">立即解锁</el-button>
+          <el-button type="primary" @click="isPaid = true">立即解锁</el-button>
           
           <div class="action-buttons">
             <el-button @click="retakeTest">重新测试</el-button>
@@ -176,16 +176,16 @@ import { personalityTypes } from '../data/personalityTypes'
 import { ElMessage } from 'element-plus'
 import { handleError, withErrorHandling } from '../utils/errorHandler'
 import { Lock } from '@element-plus/icons-vue'
-import PaymentModal from '../components/PaymentModal.vue'
+// import PaymentModal from '../components/PaymentModal.vue'
 import html2canvas from 'html2canvas'
 
 const router = useRouter()
 const testStore = useTestStore()
 const paymentStore = usePaymentStore()
 
-// 支付相关状态
-const showPaymentModal = ref(false)
-const isPaid = computed(() => paymentStore.isPaid)
+// 支付相关状态 (已注释)
+// const showPaymentModal = ref(false)
+const isPaid = computed(() => true) // 直接设置为true，跳过支付
 
 // 加载状态和错误处理
 const loading = ref(true)
@@ -306,7 +306,7 @@ const saveImage = async () => {
 const shareResult = () => {
   if (!personalityType.value || !result.value) return
   
-  const shareText = `我的MBTI性格类型是${result.value.type}(${personalityType.value.name})，快来测测你的吧！https://d1bh185c-5173.asse.devtunnels.ms/`
+  const shareText = `我的MBTI性格类型是${result.value.type}(${personalityType.value.name})，快来测测你的吧！https://sealongs.github.io/mbti-test/`
   
   navigator.clipboard.writeText(shareText)
     .then(() => ElMessage.success('分享文本已复制到剪贴板'))
@@ -314,10 +314,10 @@ const shareResult = () => {
 }
 
 // 处理支付成功
-const handlePaymentSuccess = () => {
-  ElMessage.success('支付成功，已解锁完整报告！')
-  showPaymentModal.value = false
-}
+// const handlePaymentSuccess = () => {
+//   ElMessage.success('支付成功，已解锁完整报告！')
+//   showPaymentModal.value = false
+// }
 </script>
 
 <style scoped lang="scss">
@@ -449,6 +449,17 @@ const handlePaymentSuccess = () => {
         gap: 1rem;
         margin-top: 3rem;
         flex-wrap: wrap;
+        
+        .el-button {
+          min-width: 160px;
+          margin: 0.5rem;
+        }
+        
+        .el-button--success,
+        .el-button--primary {
+          flex: 1;
+          max-width: 200px;
+        }
       }
     }
 

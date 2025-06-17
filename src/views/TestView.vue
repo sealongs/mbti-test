@@ -51,11 +51,11 @@
             class="radio-group"
             @change="handleOptionSelect"
           >
-            <el-radio-button :label="1">非常不同意</el-radio-button>
-            <el-radio-button :label="2">不同意</el-radio-button>
-            <el-radio-button :label="3">中立</el-radio-button>
-            <el-radio-button :label="4">同意</el-radio-button>
-            <el-radio-button :label="5">非常同意</el-radio-button>
+            <el-radio-button :value="1">非常不同意</el-radio-button>
+            <el-radio-button :value="2">不同意</el-radio-button>
+            <el-radio-button :value="3">中立</el-radio-button>
+            <el-radio-button :value="4">同意</el-radio-button>
+            <el-radio-button :value="5">非常同意</el-radio-button>
           </el-radio-group>
         </div>
 
