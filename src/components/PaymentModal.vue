@@ -36,14 +36,14 @@
             :class="{ active: paymentMethod === 'wechat' }"
             @click="paymentMethod = 'wechat'"
           >
-            <img :src="paymentIcons.wechat" alt="微信支付" class="payment-icon" />
+            <el-icon><ChatDotRound /></el-icon>
             微信支付
           </el-button>
           <el-button
             :class="{ active: paymentMethod === 'alipay' }"
             @click="paymentMethod = 'alipay'"
           >
-            <img :src="paymentIcons.alipay" alt="支付宝" class="payment-icon" />
+            <el-icon><Money /></el-icon>
             支付宝
           </el-button>
         </div>
@@ -51,11 +51,9 @@
 
       <div class="qrcode-section" v-if="paymentMethod">
         <div class="qrcode-wrapper">
-          <img 
-            :src="currentQRCode"
-            :alt="paymentMethod === 'wechat' ? '微信支付二维码' : '支付宝二维码'"
-            class="qrcode"
-          />
+          <el-icon size="200">
+            <component :is="paymentMethod === 'wechat' ? 'ChatDotRound' : 'Money'" />
+          </el-icon>
         </div>
         <p class="qrcode-tip">请使用{{ paymentMethod === 'wechat' ? '微信' : '支付宝' }}扫码支付</p>
         <p class="payment-status" v-if="isCheckingPayment">正在检查支付状态...</p>
@@ -76,8 +74,6 @@ import { ref, computed, onUnmounted, watch } from 'vue'
 import { Check } from '@element-plus/icons-vue'
 import { usePaymentStore } from '../stores/paymentStore'
 import { ElMessage } from 'element-plus'
-import { paymentIcons } from '../assets/payment-icons'
-import { paymentImages } from '../assets/payment-images'
 
 const props = defineProps<{
   modelValue: boolean
@@ -96,16 +92,6 @@ const checkPaymentTimer = ref<number | null>(null)
 const dialogVisible = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value)
-})
-
-// 获取当前支付方式对应的二维码图片
-const currentQRCode = computed(() => {
-  if (paymentMethod.value === 'wechat') {
-    return paymentImages.wechat
-  } else if (paymentMethod.value === 'alipay') {
-    return paymentImages.alipay
-  }
-  return paymentImages.qrcode
 })
 
 const handleClose = () => {

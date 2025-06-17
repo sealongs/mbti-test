@@ -22,7 +22,7 @@
 
         <!-- 付费内容区域 -->
         <template v-if="isPaid">
-          <section class="description-section">
+        <section class="description-section">
             <h3>详细类型描述</h3>
             <p>{{ personalityType.description }}</p>
           </section>
@@ -171,17 +171,13 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTestStore } from '../stores/testStore'
-import { usePaymentStore } from '../stores/paymentStore'
 import { personalityTypes } from '../data/personalityTypes'
 import { ElMessage } from 'element-plus'
 import { handleError, withErrorHandling } from '../utils/errorHandler'
-import { Lock } from '@element-plus/icons-vue'
-// import PaymentModal from '../components/PaymentModal.vue'
 import html2canvas from 'html2canvas'
 
 const router = useRouter()
 const testStore = useTestStore()
-const paymentStore = usePaymentStore()
 
 // 支付相关状态 (已注释)
 // const showPaymentModal = ref(false)
@@ -196,8 +192,6 @@ const initializeResult = async () => {
   try {
     loading.value = true
     error.value = false
-    // 初始化支付状态
-    paymentStore.initPaymentState()
     // 模拟加载延迟
     await new Promise(resolve => setTimeout(resolve, 800))
     
@@ -284,26 +278,7 @@ const saveImage = async () => {
     const canvas = await html2canvas(element, {
       useCORS: true,
       scale: 2, // 提高图片质量
-      backgroundColor: '#ffffff',
-      logging: true, // 启用日志调试
-      ignoreElements: (element) => false, // 不忽略任何元素
-      onclone: (clonedDoc) => {
-        // 强制显示所有职业标签
-        const tags = clonedDoc.querySelectorAll('.career-tag')
-        tags.forEach(tag => {
-          tag.style.opacity = '1'
-          tag.style.visibility = 'visible'
-          tag.style.display = 'inline-block'
-          tag.style.zIndex = '9999'
-        })
-        
-        // 确保职业区域可见
-        const careersSection = clonedDoc.querySelector('.careers-section')
-        if (careersSection) {
-          careersSection.style.overflow = 'visible'
-          careersSection.style.height = 'auto'
-        }
-      }
+      backgroundColor: '#ffffff'
     })
     
     // 恢复按钮区域
