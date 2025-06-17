@@ -284,7 +284,26 @@ const saveImage = async () => {
     const canvas = await html2canvas(element, {
       useCORS: true,
       scale: 2, // 提高图片质量
-      backgroundColor: '#ffffff'
+      backgroundColor: '#ffffff',
+      logging: true, // 启用日志调试
+      ignoreElements: (element) => false, // 不忽略任何元素
+      onclone: (clonedDoc) => {
+        // 强制显示所有职业标签
+        const tags = clonedDoc.querySelectorAll('.career-tag')
+        tags.forEach(tag => {
+          tag.style.opacity = '1'
+          tag.style.visibility = 'visible'
+          tag.style.display = 'inline-block'
+          tag.style.zIndex = '9999'
+        })
+        
+        // 确保职业区域可见
+        const careersSection = clonedDoc.querySelector('.careers-section')
+        if (careersSection) {
+          careersSection.style.overflow = 'visible'
+          careersSection.style.height = 'auto'
+        }
+      }
     })
     
     // 恢复按钮区域
@@ -438,8 +457,15 @@ const shareResult = () => {
       }
 
       .careers-section {
+        overflow: visible !important;
+        
         .career-tag {
           margin: 0.5rem 0.5rem 0.5rem 0;
+          display: inline-block !important;
+          opacity: 1 !important;
+          visibility: visible !important;
+          position: relative !important;
+          z-index: 9999 !important;
         }
       }
 
